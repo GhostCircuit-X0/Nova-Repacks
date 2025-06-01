@@ -13,11 +13,21 @@ import {
 import { SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
+import BlogSearch from '@/components/BlogSearch.tsx'
 
 const blog = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE)
+
+const allBlogPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .map((post) => ({
+    title: post.data.title,
+    slug: post.slug,
+    description: post.data.description,
+    date: post.data.date,
+  }))
 ---
 
 <Layout title="Home" description={SITE.DESCRIPTION}>
@@ -33,6 +43,12 @@ const blog = (await getCollection('blog'))
         Repacked games from FitGirl, re-uploaded and organized for easy access. 
       </p>
     </section>
+
+    <!-- Search Bar Section -->
+    <section>
+      <BlogSearch client:load posts={allBlogPosts} />
+    </section>
+
     <section class="flex flex-col gap-y-4">
       <h2 class="text-2xl font-bold">Latest posts</h2>
       <ul class="not-prose flex flex-col gap-y-4">
