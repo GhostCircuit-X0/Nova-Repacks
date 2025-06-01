@@ -5,3 +5,11 @@ modules = ["nodejs-20"]
 [nix]
 channel = "stable-24_05"
 packages = ["cowsay"]
+
+[[ports]]
+localPort = 1234
+externalPort = 3000
+
+[[ports]]
+localPort = 24678
+externalPort = 80
