@@ -3,15 +3,8 @@ import BlogCard from '@/components/BlogCard.astro'
 import Container from '@/components/Container.astro'
 import Link from '@/components/Link.astro'
 import { buttonVariants } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
+import { SITE } from '@/consts'
 import { getCollection } from 'astro:content'
 import BlogSearch from '@/components/BlogSearch.tsx'
 
@@ -26,7 +19,9 @@ const allBlogPosts = (await getCollection('blog'))
     title: post.data.title,
     slug: post.slug,
     description: post.data.description,
-    date: post.data.date,
+    date: post.data.date?.toISOString?.() ?? String(post.data.date) ?? "",
+    authors: post.data.authors ?? [],
+    tags: post.data.tags ?? [],
   }))
 ---
 
@@ -40,7 +35,7 @@ const allBlogPosts = (await getCollection('blog'))
         </span>
       </h1>
       <p class="mt-2 max-w-2xl text-center text-lg text-muted-foreground">
-        Repacked games from FitGirl, re-uploaded and organized for easy access. 
+        Repacked games from FitGirl, re-uploaded and organized for easy access.
       </p>
     </section>
 
